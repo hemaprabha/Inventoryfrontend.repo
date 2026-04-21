@@ -1,25 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
-
+import Auth from "./Auth";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { BrowserRouter } from "react-router-dom";
+import { Route,Routes } from "react-router-dom";
+import Dashboard from "./Dashboard";
+import "bootstrap-icons/font/bootstrap-icons.css";
+import Inventorylist from "./Inventorylist";
+import Addproduct from "./Addproduct";
+import Editproduct from "./Editproduct";
 function App() {
+   
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+    <ToastContainer />
+   <BrowserRouter>
+      {/* Toast container should also be here */}
+      
+      <Routes>
+        <Route path="/" element={<Auth />} />
+        <Route path="/dashboard" element={<Dashboard/>} />
+        <Route path="/inventorylist" element={<Inventorylist/>} />
+         <Route path="/addproduct" element={<Addproduct/>} />
+      <Route path="/editproduct/:id" element={<Editproduct />} />
+      </Routes>
+    </BrowserRouter>
+    </>
   );
+   
 }
 
 export default App;
