@@ -2,27 +2,29 @@ import { useEffect, useState } from "react";
 import { FaCog, FaBell } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import API from "./api";
 function  Dashboard(){
-   const DASHBOARD_API = "http://127.0.0.1:8000/api/dashboard";
+ 
   const navigate=useNavigate();
   const[total_products,setTotal_products]=useState("");
   const[total_users,setTotal_users]=useState("");
   const[total_stocks,setTotal_stocks]=useState("");
 
-  useEffect(()=>{
-    const fetchdata=async () => {
-      try {
-   const dashboardres = await axios.get(DASHBOARD_API);
-        const data = dashboardres.data;
-        setTotal_products(data.total_product);
-        setTotal_stocks(data.total_stock);
-        setTotal_users(data.total_user);  
-      } catch (err) {
-         console.error(err);
-      }
+  useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const dashboardres = await API.get("/dashboard");
+      const data = dashboardres.data;
+      setTotal_products(data.total_product);
+      setTotal_stocks(data.total_stock);
+      setTotal_users(data.total_user);
+    } catch (err) {
+      console.error(err);
     }
-fetchdata();
-    },[]);
+  };
+
+  fetchData();
+}, []);
   
     return (
         <>

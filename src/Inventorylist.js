@@ -15,41 +15,44 @@ function Inventorylist() {
     loadProducts();
   }, []);
 
-  const loadProducts = () => {
-    API.get("/products")
-      .then((res) => {
-        setProducts(res.data.data);
-      });
-  };
-  useEffect(() => {
+  const loadProducts = async () => {
+  try {
+    const res = await API.get("/products");
+    setProducts(res.data.data);
+  } catch (err) {
+    console.error(err);
+    toast.error("Failed to load products");
+  }
+};
+ useEffect(() => {
   const fetchdata = async () => {
     try {
-      const dashboardres = await axios.get( "http://127.0.0.1:8000/api/dashboard");
+      const dashboardres = await API.get("/dashboard");
       const data = dashboardres.data;
 
       setTotal_products(data.total_product);
       setTotal_stocks(data.total_stock);
       setTotal_users(data.total_user);
-
     } catch (err) {
       console.error(err);
+      toast.error("Dashboard load failed");
     }
   };
 
-  fetchdata(); 
+  fetchdata();
 }, []);
 
   
-  const handleDelete = (id) => {
- 
-  axios.delete(`http://localhost:8000/api/products/${id}`)
-    .then(() => {
-      toast.success("Product deleted");
-      setProducts(products.filter((p) => p.id !== id));
-    })
-    .catch(() => {
-      toast.error("Delete failed");
-    });
+  const handleDelete = async (id) => {
+  try {
+    await API.delete(`/products/${id}`);
+
+    toast.success("Product deleted");
+
+    setProducts((prev) => prev.filter((p) => p.id !== id));
+  } catch (err) {
+    toast.error("Delete failed");
+  }
 };
 console.log(total_users);
     return (<>

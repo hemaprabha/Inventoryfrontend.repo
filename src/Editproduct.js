@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
-
+import API from "./api";
 function Editproduct() {
   const navigate = useNavigate();
   const { id } = useParams(); // 👈 get id
@@ -13,43 +13,50 @@ function Editproduct() {
   const [category, setCategory] = useState("");
 
   
-  useEffect(() => {
-    axios.get(`http://localhost:8000/api/products/${id}`)
-      .then((res) => {
-        const data = res.data.data;
-        setName(data.name);
-        setPrice(data.price);
-        setStock(data.stock);
-        setCategory(data.category);
-      })
-      .catch(() => toast.error("Failed to load product"));
-  }, [id]);
+ useEffect(() => {
+  const fetchProduct = async () => {
+    try {
+      const res = await API.get(`/products/${id}`);
+      const data = res.data.data;
+
+      setName(data.name);
+      setPrice(data.price);
+      setStock(data.stock);
+      setCategory(data.category);
+    } catch (err) {
+      toast.error("Failed to load product");
+    }
+  };
+
+  fetchProduct();
+}, [id]);
 
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    axios.put(`http://localhost:8000/api/products/${id}`, {
+  try {
+    await API.put(`/products/${id}`, {
       name,
       price,
       stock,
-      category
-    })
-    .then(() => {
-      toast.success("Product updated");
-      navigate("/inventorylist");
-    })
-    .catch((err) => {
-      if (err.response?.data?.errors) {
-        Object.values(err.response.data.errors).forEach((field) => {
-          field.forEach((msg) => toast.error(msg));
-        });
-      } else {
-        toast.error("Update failed");
-      }
+      category,
     });
-  };
 
+    toast.success("Product updated");
+    navigate("/inventorylist");
+  } catch (err) {
+    const data = err.response?.data;
+
+    if (data?.errors) {
+      Object.values(data.errors).forEach((field) => {
+        field.forEach((msg) => toast.error(msg));
+      });
+    } else {
+      toast.error(data?.message || "Update failed");
+    }
+  }
+};
   return (
     <section className="min-h-screen bg-blue-900 flex items-center justify-center">
 

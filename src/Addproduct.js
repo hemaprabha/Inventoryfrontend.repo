@@ -2,6 +2,7 @@ import { use, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import API from "./api";
 function Addproduct() {
   const navigate=useNavigate();
   const[name,setName]=useState("");
@@ -9,44 +10,39 @@ function Addproduct() {
  const[stock,setStock]=useState("");
  const[category,setCategory]=useState("");
 
-  const handleSubmit=(e)=>{
-    e.preventDefault();
-     axios.post("http://localhost:8000/api/products",{
-        name,
-        price,
-        stock,
-        category
-    })
-    .then((res)=>{
-        console.log(res.data)
-        setName("")
-        setPrice("")
-        setStock("")
-        setCategory("")
-toast.success("Product added")
-navigate("/inventorylist");
-    })
-   .catch((err) => {
-  if (err.response) {
-    const data = err.response.data;
+ const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    if (data.errors) {
+  try {
+    const res = await API.post("/products", {
+      name,
+      price,
+      stock,
+      category,
+    });
+
+    console.log(res.data);
+
+    setName("");
+    setPrice("");
+    setStock("");
+    setCategory("");
+
+    toast.success("Product added");
+
+    navigate("/inventorylist");
+  } catch (err) {
+    const data = err.response?.data;
+
+    if (data?.errors) {
       Object.values(data.errors).forEach((field) => {
-        field.forEach((msg) => {
-          toast.error(msg); 
-        });
+        field.forEach((msg) => toast.error(msg));
       });
+    } else {
+      toast.error(data?.message || "Server not reachable");
     }
-    else if (data.message) {
-      toast.error(data.message);
-    }
-
-  } else {
-    toast.error("Server not reachable");
   }
-});
-
- }
+};
 
   return (
     <section className="min-h-screen bg-blue-900 flex items-center justify-center">
