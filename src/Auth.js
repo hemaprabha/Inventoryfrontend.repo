@@ -74,100 +74,101 @@ function Auth() {
   };
 
   return (
-    <div className="min-h-screen flex">
-      {/* LEFT SIDE */}
-      <div className="w-2/4 bg-sky-600 rounded-sm">
-        <img
-          className="mt-40 ms-24"
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKsdH-NyNgwa-v1a_XVPoDrVlOT8tEdoaZZw&s"
-        />
-      </div>
+    <div className="min-h-screen flex flex-col md:flex-row">
+  
+  {/* LEFT SIDE */}
+  <div className="hidden md:flex md:w-1/2 bg-sky-600 items-center justify-center">
+    <img
+      className="w-3/4"
+      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKsdH-NyNgwa-v1a_XVPoDrVlOT8tEdoaZZw&s"
+      alt="auth"
+    />
+  </div>
 
-      {/* RIGHT SIDE */}
-      <div className="w-3/4 bg-white rounded-sm">
-        <p className="text-4xl text-sky-600 font-bold text-center">
-          {login ? "Sign in" : "Create Account"}
-        </p>
+  {/* RIGHT SIDE */}
+  <div className="w-full md:w-1/2 bg-white flex flex-col justify-center px-6 md:px-0">
+    
+    <p className="text-3xl md:text-4xl text-sky-600 font-bold text-center">
+      {login ? "Sign in" : "Create Account"}
+    </p>
 
-        {/* SOCIAL */}
-        <div className="flex justify-center gap-4 mt-4">
-          <FaFacebookF />
-          <FaTwitter />
-          <FaLinkedinIn />
-        </div>
+    {/* SOCIAL */}
+    <div className="flex justify-center gap-4 mt-4 text-gray-400">
+      <FaFacebookF />
+      <FaTwitter />
+      <FaLinkedinIn />
+    </div>
 
-        <p className="mt-4 text-center text-gray-400">
-          or use your email account
-        </p>
+    <p className="mt-4 text-center text-gray-400">
+      or use your email account
+    </p>
 
-        {/* FORM */}
-        <div className="mt-10 flex justify-center">
-          <div className="flex flex-col gap-4 w-96">
+    {/* FORM */}
+    <div className="mt-8 flex justify-center">
+      <div className="flex flex-col gap-4 w-full max-w-sm">
 
-            {/* NAME */}
-            {!login && (
-              <div className="flex items-center border-2 border-sky-600 px-4 py-3">
-                <FaUser className="mr-3" />
-                <input
-                  type="text"
-                  placeholder="Username"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="w-full outline-none"
-                />
-              </div>
-            )}
-
-            {/* EMAIL */}
-            <div className="flex items-center border-2 border-sky-600 px-4 py-3">
-              <FaEnvelope className="mr-3" />
-              <input
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full outline-none"
-              />
-            </div>
-
-            {/* PASSWORD */}
-            <div className="flex items-center border-2 border-sky-600 px-4 py-3">
-              <FaLock className="mr-3" />
-              <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full outline-none"
-              />
-            </div>
-
+        {!login && (
+          <div className="flex items-center border-2 border-sky-600 px-4 py-3 rounded">
+            <FaUser className="mr-3 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Username"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full outline-none"
+            />
           </div>
+        )}
+
+        <div className="flex items-center border-2 border-sky-600 px-4 py-3 rounded">
+          <FaEnvelope className="mr-3 text-gray-400" />
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full outline-none"
+          />
         </div>
 
-        {/* BUTTON */}
-        <div className="mt-10 flex justify-center">
-          <button
-            type="button"
-            onClick={login ? handleLogin : handleRegister}
-            disabled={loading}
-            className="text-white bg-sky-600 px-4 py-2 rounded-lg"
-          >
-            {loading ? "Please wait..." : login ? "SIGN IN" : "SIGN UP"}
-          </button>
+        <div className="flex items-center border-2 border-sky-600 px-4 py-3 rounded">
+          <FaLock className="mr-3 text-gray-400" />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full outline-none"
+          />
         </div>
 
-        {/* TOGGLE */}
-        <p
-          className="mt-4 text-center text-gray-500 cursor-pointer"
-          onClick={() => setLogin(!login)}
-        >
-          {login
-            ? "Don't have an account? Sign Up"
-            : "Already have an account? Sign In"}
-        </p>
       </div>
     </div>
+
+    {/* BUTTON */}
+    <div className="mt-8 flex justify-center">
+      <button
+        type="button"
+        onClick={login ? handleLogin : handleRegister}
+        disabled={loading}
+        className="text-white bg-sky-600 px-6 py-2 rounded-lg w-full max-w-sm"
+      >
+        {loading ? "Please wait..." : login ? "SIGN IN" : "SIGN UP"}
+      </button>
+    </div>
+
+    {/* TOGGLE */}
+    <p
+      className="mt-4 text-center text-gray-500 cursor-pointer"
+      onClick={() => setLogin(!login)}
+    >
+      {login
+        ? "Don't have an account? Sign Up"
+        : "Already have an account? Sign In"}
+    </p>
+
+  </div>
+</div>
   );
 }
 

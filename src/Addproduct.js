@@ -125,6 +125,7 @@ function Addproduct() {
 
             <button
               type="button"
+              onClick={() => navigate("/inventorylist")}
               className="border border-red-500 text-red-500 px-5 py-2 rounded-lg hover:bg-red-500 hover:text-white"
             >
               Cancel
